@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    #changeColor {
+      display: inline-block;
+      width: 150px;
+      height: 30px;
+      outline: none;
+    }
+  </style>
+</head>
+
+<body style="min-width:300px; padding:5px;">
+  <div id="payBtnPanel">
+    <button id="payBtn">카드 결제 하기</button>
+    <button id="cancelBtn">카드 결제 취소</button>
+  </div>
+
+  <div id="payPanel" style="display:none">
+    <table id="payTable" width="300px">
+      <tr>
+        <td width="30%">카드번호</td>
+        <td width="70%">
+          <input id="cardNum" name="cardNum" style="width:100%" value="">
+        </td>
+      </tr>
+      <tr>
+        <td>유효기간</td>
+        <td>
+          <input id="cardExpire" name="cardExpire" style="width:100%" value="">
+        </td>
+      </tr>
+      <tr>
+        <td>할부개월</td>
+        <td>
+          <select id="cardQuota" style="width:100%">
+            <option value="00">일시불</option>
+            <option value="02">2개월</option>
+            <option value="03">3개월</option>
+            <option value="04">4개월</option>
+            <option value="05">5개월</option>
+            <option value="06">6개월</option>
+            <option value="07">7개월</option>
+            <option value="08">8개월</option>
+            <option value="09">9개월</option>
+            <option value="10">10개월</option>
+            <option value="11">11개월</option>
+            <option value="12">12개월</option>
+          </select>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div id="confirmPanel" style="display:none;">
+    <div id="cardPreview"></div>
+  <select id="cardQuotaConfirm" style="width:100%;">
+    <option value="00">일시불</option>
+    <option value="02">2개월</option>
+    <option value="03">3개월</option>
+    <option value="04">4개월</option>
+    <option value="05">5개월</option>
+    <option value="06">6개월</option>
+    <option value="07">7개월</option>
+    <option value="08">8개월</option>
+    <option value="09">9개월</option>
+    <option value="10">10개월</option>
+    <option value="11">11개월</option>
+    <option value="12">12개월</option>
+  </select>
+  </div>
+  <button id="payConfirmBtn" style="float:right; display:none;">결제</button>
+  <button id="paySaveBtn" style="float:right; display:none;">결제</button>
+  <script type="text/javascript" src="js/lib/jquery.js"></script>
+  <script type="text/javascript" src="js/lib/airtable.browser.js"></script>
+  <script src="popup.js"></script>
+</body>
+
+</html>
