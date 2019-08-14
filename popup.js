@@ -33,12 +33,15 @@ payBtn.onclick = function () {
           mallUserId: fields["연락처"][0]
         }, function (data) {
           if (data.cardInfoArray) {
-            cardInfoStore = data.cardInfoArray[0];
-            $("#payBtnPanel").hide()
+            cardInfoStore = data.cardInfoArray;
+            $("#payBtnPanel").hide();
             $("#confirmPanel").show();
-            $("#payConfirmBtn").show()
-            $("confirmPanel").show()
-            $("#cardPreview").text(cardInfoStore.cardNum.substring(0, 4) + "-****-****-****")
+            $("#payConfirmBtn").show();
+            $("confirmPanel").show();
+            $("#cardPreview").empty();
+            cardInfoStore.map(function(c, i) {
+              $("#cardPreview").append($('<option>', {value:i, text:c.cardNum.substring(0, 4) + "-****-****-****"}));
+            })
           } else {
             $("#payBtnPanel").hide()
             $("#payPanel").show()
@@ -89,7 +92,7 @@ cancelBtn.onclick = function () {
 
 paySaveBtn.onclick = function () {
   var fields = fieldStore;
-
+  
   var data = {
     mid: mid,
     moid: fields["주문 번호"],
@@ -110,6 +113,8 @@ paySaveBtn.onclick = function () {
 payConfirmBtn.onclick = function () {
   var fields = fieldStore;
 
+  var selectedCard = cardInfoStore[parseInt($("#cardPreview").val())]
+
   var data = {
     mid: mid,
     moid: fields["주문 번호"],
@@ -120,11 +125,18 @@ payConfirmBtn.onclick = function () {
     buyerName: fields["고객명"][0],
     buyerTel: fields["연락처"][0],
     mallUserId: fields["연락처"][0],
-    cardNum: cardInfoStore.cardNum,
-    cardExpire: cardInfoStore.cardExpire,
+    cardNum: selectedCard.cardNum,
+    cardExpire: selectedCard.cardExpire,
     cardQuota: $("#cardQuotaConfirm").val()
   }
   doPay(data, rowIdStore);
+}
+
+addCard.onclick = function() {
+  $("#payPanel").show();
+  $("#paySaveBtn").show();
+  $("#payConfirmBtn").hide();
+  $("#confirmPanel").hide();
 }
 
 function getSelected(success, fail) {
@@ -151,9 +163,12 @@ function doPay(userData, rowId, isSave) {
     success: function (data) {
       console.log(data)
       alert(data.resultMsg)
+      if (data.resultCode !== "0000")
+        return;
       base('주문').update(rowId, {
         "상태": "결제 완료",
-        "거래고유번호": data.tid
+        "거래고유번호": data.tid,
+        "카드 결제 이력": data.cardNum.substring(0, 4) + " " + data.appCardName
       }, function (err, record) {
         if (err) {
           console.error(err);
