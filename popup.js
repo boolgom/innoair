@@ -40,7 +40,7 @@ payBtn.onclick = function () {
             $("confirmPanel").show();
             $("#cardPreview").empty();
             cardInfoStore.map(function(c, i) {
-              $("#cardPreview").append($('<option>', {value:i, text:c.cardNum.substring(0, 4) + "-****-****-****"}));
+              $("#cardPreview").append($('<option>', {value:i, text:c.cardNum.substring(0, 4) + "-****-****-" + c.cardNum.substring(12, 16)}));
             })
           } else {
             $("#payBtnPanel").hide()
